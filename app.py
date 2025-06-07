@@ -1,6 +1,12 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, request, redirect, session, url_for
+from sqlalchemy import create_engine, text
+import os
+from datetime import datetime, date
+from decimal import Decimal, InvalidOperation
 
 app = Flask(__name__)
+app.secret_key = 'sua_chave_secreta_muito_segura_e_unica_aqui_troque_imediatamente'
+app.debug = True
 
 @app.route('/')
 def em_breve():
@@ -30,4 +36,9 @@ def em_breve():
     ''')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true" or not app.debug:
+        import logging
+
+        pass
+
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=app.debug)
